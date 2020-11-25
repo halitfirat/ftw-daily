@@ -21,6 +21,8 @@ const createUserWithIdp = require('./api/auth/createUserWithIdp');
 const { authenticateFacebook, authenticateFacebookCallback } = require('./api/auth/facebook');
 const { authenticateGoogle, authenticateGoogleCallback } = require('./api/auth/google');
 
+const { openIdConfiguration, jwksUri } = require('./api-util/idToken');
+
 const router = express.Router();
 
 // ================ API router middleware: ================ //
@@ -79,5 +81,18 @@ router.get('/auth/google', authenticateGoogle);
 // with Google. In this route a Passport.js custom callback is used for calling
 // loginWithIdp endpoint in Flex API to authenticate user to Flex
 router.get('/auth/google/callback', authenticateGoogleCallback);
+
+// These endpoints will be used if you setup your own OpenID connect login
+// You can read more from Flex docs:
+// https://www.sharetribe.com/docs/cookbook-social-logins-and-sso/use-open-id-connect/
+
+const rsaSecretKey = process.env.RSA_SECRET_KEY;
+const rsaPublicKey = process.env.RSA_PUBLIC_KEY;
+const keyId = process.env.KEY_ID;
+
+if (rsaPublicKey && rsaSecretKey) {
+  router.get('/.well-known/openid-configuration', openIdConfiguration);
+  router.get('/.well-known/jwks.json', jwksUri(rsaPublicKey, keyId));
+}
 
 module.exports = router;
