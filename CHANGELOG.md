@@ -14,6 +14,8 @@ way to update this template, but currently, we follow a pattern:
 
 ## Upcoming version 2020-XX-XX
 
+- [add] Add helper functions for setting up your own OIDC authentication and using FTW server as
+  proxy when needed. [#1383](https://github.com/sharetribe/ftw-daily/pull/1383)
 - [fix] Call for the same page caused unnecessary rendering
   [#1388](https://github.com/sharetribe/ftw-daily/pull/1388)
 - [fix] Fix Google Maps default centering if no bounds or center is given.
